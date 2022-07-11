@@ -10,7 +10,7 @@ const App = () => {
     <CssResets>
       <Routes>
         <Route path="login" element={<LoginPage />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/task-management" element={<Home />} />
         <Route path="*" element={<NoMatchPage />} />
       </Routes>
     </CssResets>

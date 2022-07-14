@@ -1,26 +1,71 @@
-import React, { useState } from "react"
+import React from "react"
+import { Formik, Form, Field, FastField, FieldArray } from "formik"
+import * as Yup from "yup"
+import _ from "lodash"
+import { addBoard, editBoard } from "@/setup/features/app-data/appDataSlice"
+import { useDispatch, useSelector } from "react-redux"
 import StyledDialog from "./styles/StyledDialog"
 import StyledDialogTitle from "./styles/StyledDialogTitle"
 import StyledFormControl from "./styles/StyledFormControl"
 import StyledDialogActions from "./styles/StyledDialogActions"
 import StyledTextField from "./styles/StyledTextField"
-import StyledButtonCreateBoard from "./styles/StyledButtonCreateBoard"
+import StyledButtonSubmitBoard from "./styles/StyledButtonSubmitBoard"
+import StyledButtonAddFieldColumn from "./styles/StyledButtonAddFieldColumn"
+import StyledButtonRemoveFieldColumn from "./styles/StyledButtonRemoveFieldColumn"
+import StyledFormControlColumn from "./styles/StyledFormControlColumn"
 import DialogContent from "@mui/material/DialogContent"
 
-const BoardModal = (props) => {
-  const { open, toggleModal, type } = props
-  const [addtlColumn, setAddtlColumn] = useState(0)
+const defaultValues = {
+  boardName: "",
+  columns: [],
+}
 
-  const addColumn = () => {
-    console.log("what", addtlColumn)
-    setAddtlColumn((prevCount) => prevCount + 1)
+const onSubmit = (
+  values,
+  onSubmitProps,
+  toggleModal,
+  dispatch,
+  type,
+  selectedBoard
+) => {
+  const { resetForm, setSubmitting } = onSubmitProps
+
+  if (type === "edit") dispatch(editBoard({ selectedBoard, values }))
+  else dispatch(addBoard(values))
+
+  toggleModal(false)
+  setSubmitting(false)
+  resetForm()
+}
+
+const validationSchema = Yup.object({
+  boardName: Yup.string()
+    .required("Required")
+    .matches(/[^\s]/, "Invalid field name"),
+  columns: Yup.array().of(
+    Yup.object().shape({
+      columnName: Yup.string()
+        .required("Required")
+        .matches(/[^\s]/, "Invalid field name"),
+    })
+  ),
+})
+
+const BoardModal = (props) => {
+  const { open, toggleModal, type, selectedBoard } = props
+  const dispatch = useDispatch()
+  const appData = useSelector((state) => state.appData)
+  const {
+    data: { boards },
+  } = appData
+
+  const boardData = boards?.find((board) => board.boardId === selectedBoard)
+  const savedData = {
+    boardName: boardData?.boardName,
+    columns: _.cloneDeep(boardData?.columns),
   }
 
-  // in edit modal
-  // loop through columns show column names, delete column
-
-  // in add modal
-  // show new text field when user click add column
+  const initialValues = selectedBoard ? savedData : defaultValues
 
   return (
     <StyledDialog open={open}>
@@ -29,24 +74,112 @@ const BoardModal = (props) => {
         type={type}
       ></StyledDialogTitle>
 
-      <DialogContent>
-        <StyledFormControl>
-          <StyledTextField id="board-name" label="Board Name" />
-          <StyledTextField id="column-name" label="Column Name" />
-        </StyledFormControl>
-      </DialogContent>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values, onSubmitProps) => {
+          onSubmit(
+            values,
+            onSubmitProps,
+            toggleModal,
+            dispatch,
+            type,
+            selectedBoard
+          )
+        }}
+      >
+        {(formik) => {
+          return (
+            <Form>
+              <DialogContent>
+                <StyledFormControl>
+                  <FastField name="boardName">
+                    {(props) => {
+                      const {
+                        field,
+                        form: { errors },
+                      } = props
 
-      <StyledDialogActions>
-        {type === "edit" ? null : (
-          <StyledButtonCreateBoard withIcon={true} addColumn={addColumn}>
-            Add New Column
-          </StyledButtonCreateBoard>
-        )}
+                      return (
+                        <StyledTextField
+                          id="board-name"
+                          label="Board Name"
+                          helperText={errors.boardName}
+                          field={field}
+                        />
+                      )
+                    }}
+                  </FastField>
 
-        <StyledButtonCreateBoard variant="contained">
-          {type === "edit" ? "Update Board" : "Create New Board"}
-        </StyledButtonCreateBoard>
-      </StyledDialogActions>
+                  <FieldArray name="columns">
+                    {(fieldArrayProps) => {
+                      const {
+                        push,
+                        remove,
+                        form: {
+                          values: { columns },
+                        },
+                      } = fieldArrayProps
+
+                      return (
+                        <>
+                          {columns.map((column, idx) => {
+                            return (
+                              <StyledFormControlColumn key={idx}>
+                                <Field name={`columns[${idx}].columnName`}>
+                                  {(props) => {
+                                    const {
+                                      field,
+                                      form: { errors },
+                                    } = props
+
+                                    return (
+                                      <>
+                                        <StyledTextField
+                                          label="Column Name"
+                                          field={field}
+                                          helperText={
+                                            errors.columns?.[idx]?.columnName
+                                          }
+                                        />
+
+                                        <StyledButtonRemoveFieldColumn
+                                          onClick={() => remove(idx)}
+                                        />
+                                      </>
+                                    )
+                                  }}
+                                </Field>
+                              </StyledFormControlColumn>
+                            )
+                          })}
+                          <StyledButtonAddFieldColumn
+                            type={type}
+                            disabled={!formik.isValid || formik.isSubmitting}
+                            onClick={() => push("")}
+                          >
+                            Add Column
+                          </StyledButtonAddFieldColumn>
+                        </>
+                      )
+                    }}
+                  </FieldArray>
+                </StyledFormControl>
+              </DialogContent>
+
+              <StyledDialogActions>
+                <StyledButtonSubmitBoard
+                  onClick={formik.submitForm}
+                  disabled={!formik.isValid || formik.isSubmitting}
+                  type={type}
+                >
+                  {type === "edit" ? "Update Board" : "Create New Board"}
+                </StyledButtonSubmitBoard>
+              </StyledDialogActions>
+            </Form>
+          )
+        }}
+      </Formik>
     </StyledDialog>
   )
 }

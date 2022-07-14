@@ -21,7 +21,7 @@ const StyledToolbarHeader = styled(Toolbar, {
 }))
 
 const StyledLogo = styled(ButtonBase)(({ theme }) => ({
-  height: "56px",
+  height: "46px",
   display: "flex",
   flexFlow: "row",
   alignItems: "center",
@@ -37,11 +37,11 @@ export default function StyledCustomization({ sideNav }) {
     <StyledToolbarHeader component="nav" open={openSideNav}>
       <StyledLogo component="a">
         <AssignmentOutlinedIcon fontSize="large" color="primary" />
-        crudemo
+        demo
       </StyledLogo>
       {openSideNav && (
         <IconButton onClick={toggleSideNavigation}>
-          <KeyboardArrowLeftIcon fontSize="large" />
+          <KeyboardArrowLeftIcon fontSize="medium" />
         </IconButton>
       )}
     </StyledToolbarHeader>

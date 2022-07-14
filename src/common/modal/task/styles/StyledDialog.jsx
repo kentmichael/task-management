@@ -7,7 +7,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
       width: "350px",
     },
     "& .MuiDialogContent-root": {
-      paddingTop: "5px",
+      paddingTop: "10px",
     },
   },
 }))

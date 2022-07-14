@@ -7,10 +7,15 @@ import { styled } from "@mui/material/styles"
 
 const StyledMenuBoardSettings = styled(Menu)(({ theme }) => ({}))
 
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  fontSize: "14px",
+}))
+
 export default function StyledCustomization({
   anchorEl,
   handleClose,
   toggleModal,
+  toggleModalConfirm,
 }) {
   const open = Boolean(anchorEl)
 
@@ -23,18 +28,18 @@ export default function StyledCustomization({
         onClose={handleClose}
         onClick={handleClose}
       >
-        <MenuItem onClick={() => toggleModal(true)}>
+        <StyledMenuItem onClick={() => toggleModal(true)}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
           Edit Board
-        </MenuItem>
-        <MenuItem>
+        </StyledMenuItem>
+        <StyledMenuItem onClick={() => toggleModalConfirm(true)}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
           Delete Board
-        </MenuItem>
+        </StyledMenuItem>
       </StyledMenuBoardSettings>
     </>
   )

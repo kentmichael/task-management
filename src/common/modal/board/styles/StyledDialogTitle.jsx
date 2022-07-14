@@ -9,6 +9,7 @@ const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   paddingTop: "30px",
+  paddingBottom: 0,
 }))
 
 const StyledTypography = styled(Typography)(({ theme }) => ({

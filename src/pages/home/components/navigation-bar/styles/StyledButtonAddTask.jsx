@@ -12,7 +12,7 @@ const StyledButtonAddTask = styled(Button)(({ theme }) => ({
     },
   },
   [theme.breakpoints.up("lg")]: {
-    fontSize: "16px",
+    fontSize: "14px",
   },
 }))
 
@@ -23,6 +23,7 @@ const StyledAddIcon = styled(AddIcon)(({ theme }) => ({
 }))
 
 const StyledBoxButtonName = styled(Box)(({ theme }) => ({
+  textTransform: "capitalize",
   [theme.breakpoints.down("sm")]: {
     display: "none",
   },

@@ -5,7 +5,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   width: "100%",
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
+  gap: "20px",
   "& .MuiInput-root": {
     fontSize: "14px",
   },

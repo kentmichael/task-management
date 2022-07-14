@@ -5,9 +5,18 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   width: "100%",
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
-  "& .MuiInput-root": {
-    fontSize: "14px",
+  gap: "20px",
+  "& .MuiInputLabel-formControl": {
+    fontSize: "12px",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& .MuiOutlinedInput-input": {
+      fontSize: "12px",
+    },
+  },
+  "& .MuiFormHelperText-root": {
+    marginInline: 0,
+    color: "red",
   },
 }))
 

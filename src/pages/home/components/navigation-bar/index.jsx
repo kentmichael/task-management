@@ -11,8 +11,9 @@ import { useSelector } from "react-redux"
 import useModal from "@/hooks/useModal"
 import BoardModal from "@/common/modal/board"
 import TaskModal from "@/common/modal/task"
+import ConfirmationModal from "@/common/modal/confirmation"
 
-const NavigationBar = ({ sideNav }) => {
+const NavigationBar = ({ sideNav, selectedBoard }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const appData = useSelector((state) => state.appData)
   const {
@@ -20,6 +21,7 @@ const NavigationBar = ({ sideNav }) => {
   } = appData
   const [openModal, toggleModal] = useModal()
   const [openModalTask, toggleModalTask] = useModal()
+  const [openModalConfirm, toggleModalConfirm] = useModal()
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget)
@@ -34,7 +36,12 @@ const NavigationBar = ({ sideNav }) => {
       <StyledToolBar sideNav={sideNav}>
         <StyledStack>
           <StyledIconButtonBurgerMenu sideNav={sideNav} />
-          <StyledTypographyBoardTitle>Board name</StyledTypographyBoardTitle>
+          <StyledTypographyBoardTitle>
+            {
+              boards?.find((board) => board.boardId === selectedBoard)
+                ?.boardName
+            }
+          </StyledTypographyBoardTitle>
         </StyledStack>
 
         <StyledStack>
@@ -44,14 +51,27 @@ const NavigationBar = ({ sideNav }) => {
             anchorEl={anchorEl}
             handleClose={handleClose}
             toggleModal={toggleModal}
+            toggleModalConfirm={toggleModalConfirm}
           />
         </StyledStack>
       </StyledToolBar>
-      <BoardModal open={openModal} toggleModal={toggleModal} type="edit" />
+      <BoardModal
+        open={openModal}
+        toggleModal={toggleModal}
+        type="edit"
+        selectedBoard={selectedBoard}
+      />
       <TaskModal
         open={openModalTask}
         toggleModalTask={toggleModalTask}
         type="create"
+        selectedBoard={selectedBoard}
+      />
+      <ConfirmationModal
+        open={openModalConfirm}
+        toggleModalConfirm={toggleModalConfirm}
+        type="board"
+        selectedBoard={selectedBoard}
       />
     </StyledAppBar>
   )

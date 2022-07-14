@@ -7,8 +7,8 @@ const StyledGridContainer = styled(Grid)(({ theme }) => ({
   alignItems: "flex-start",
   rowGap: "20px",
   "& .MuiGrid-item": {
-    padding: 0,
-    paddingInline: "10px",
+    paddingBlock: "10px",
+    paddingInline: "2.5px",
   },
 }))
 

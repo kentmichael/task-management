@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
-const appDataStorage = localStorage.getItem("tsk-mngmt-app-data")
-const initialValue = appDataStorage ?? {
+const initialValue = {
   isLoading: false,
   data: {},
   errorMessage: "",
@@ -39,17 +38,162 @@ const appDataSlice = createSlice({
   reducers: {
     setDataFromLocalStorage: (state, action) => {},
 
-    addBorder: (state, action) => {},
-    editBorder: (state, action) => {},
-    deleteBorder: (state, action) => {},
+    addBoard: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.concat({
+          boardId: state.data.boards[state.data.boards.length - 1].boardId + 1,
+          boardName: action.payload.boardName,
+          columns: action.payload.columns.map((column, idx) => {
+            return {
+              columnId: idx + 1,
+              columnName: column.columnName,
+              tasks: [],
+            }
+          }),
+        }),
+      }
+    },
+    editBoard: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.map((board) => {
+          if (board.boardId === action.payload.selectedBoard) {
+            return {
+              boardId: board.boardId,
+              boardName: action.payload.values.boardName,
+              columns: action.payload.values.columns.map((column, idx) => {
+                return {
+                  columnId: idx + 1,
+                  columnName: column.columnName,
+                  tasks: column.tasks ?? [],
+                }
+              }),
+            }
+          }
+          return board
+        }),
+      }
+    },
+    deleteBoard: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.filter(
+          (board) => board.boardId !== action.payload
+        ),
+      }
+    },
 
-    addColumn: (state, action) => {},
-    editColumn: (state, action) => {},
-    deleteColumn: (state, action) => {},
+    addTask: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.map((board) => {
+          if (board.boardId === action.payload.selectedBoard) {
+            return {
+              ...board,
+              columns: board.columns.map((column) => {
+                if (
+                  action.payload.values.status.toLowerCase() ===
+                  column.columnName.toLowerCase()
+                ) {
+                  return {
+                    ...column,
+                    tasks: column.tasks.concat({
+                      taskId:
+                        (column.tasks[column.tasks?.length - 1]?.taskId ?? 0) +
+                        1,
+                      taskTitle: action.payload.values.taskTitle,
+                      status: action.payload.values.status,
+                    }),
+                  }
+                }
+                return column
+              }),
+            }
+          }
+          return board
+        }),
+      }
+    },
+    editTask: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.map((board) => {
+          if (board.boardId === action.payload.selectedBoard) {
+            return {
+              ...board,
+              columns: board.columns.map((column) => {
+                if (column.columnId === action.payload.columnId) {
+                  return {
+                    ...column,
+                    tasks:
+                      action.payload.values.status.toLowerCase() !==
+                      column.columnName.toLowerCase()
+                        ? column.tasks.filter(
+                            (task) => task.taskId !== action.payload.taskId
+                          )
+                        : column.tasks.map((task) => {
+                            if (task.taskId === action.payload.taskId) {
+                              return {
+                                ...task,
+                                taskTitle: action.payload.values.taskTitle,
+                                status: action.payload.values.status,
+                              }
+                            }
+                            return task
+                          }),
+                  }
+                }
 
-    addTask: (state, action) => {},
-    editTask: (state, action) => {},
-    deleteTask: (state, action) => {},
+                if (
+                  action.payload.values.status.toLowerCase() ===
+                  column.columnName.toLowerCase()
+                ) {
+                  return {
+                    ...column,
+                    tasks: column.tasks.concat({
+                      taskId:
+                        (column.tasks[column.tasks?.length - 1]?.taskId ?? 0) +
+                        1,
+                      taskTitle: action.payload.values.taskTitle,
+                      status: action.payload.values.status,
+                    }),
+                  }
+                }
+
+                return column
+              }),
+            }
+          }
+          return board
+        }),
+      }
+    },
+    deleteTask: (state, action) => {
+      state.data = {
+        ...state.data,
+        boards: state.data.boards.map((board) => {
+          if (board.boardId === action.payload.selectedBoard) {
+            return {
+              ...board,
+              columns: board.columns.map((column) => {
+                if (column.columnId === action.payload.columnId) {
+                  return {
+                    ...column,
+                    tasks: column.tasks.filter(
+                      (task) => task.taskId !== action.payload.taskId
+                    ),
+                  }
+                }
+                return column
+              }),
+            }
+          }
+
+          return board
+        }),
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.pending, (state) => {
@@ -61,30 +205,30 @@ const appDataSlice = createSlice({
         user: action.payload[0],
         boards: [
           {
-            id: 1,
-            name: "todos",
+            boardId: 1,
+            boardName: "todos",
             columns: [
               {
-                id: 1,
-                colName: "pending",
-                tasks: action.payload[1].filter((todo) => {
-                  if (todo.completed === false)
-                    return {
-                      ...todo,
-                      status: "pending",
-                    }
-                }),
+                columnId: 1,
+                columnName: "pending",
+                tasks: action.payload[1]
+                  .filter((todo) => todo.completed === false)
+                  .map((todo, idx) => ({
+                    taskId: idx + 1,
+                    taskTitle: todo.title,
+                    status: "pending",
+                  })),
               },
               {
-                id: 2,
-                colName: "completed",
-                tasks: action.payload[1].filter((todo) => {
-                  if (todo.completed === true)
-                    return {
-                      ...todo,
-                      status: "completed",
-                    }
-                }),
+                columnId: 2,
+                columnName: "completed",
+                tasks: action.payload[1]
+                  .filter((todo) => todo.completed === true)
+                  .map((todo, idx) => ({
+                    taskId: idx + 1,
+                    taskTitle: todo.title,
+                    status: "completed",
+                  })),
               },
             ],
           },
@@ -101,3 +245,11 @@ const appDataSlice = createSlice({
 })
 
 export default appDataSlice.reducer
+export const {
+  addBoard,
+  editBoard,
+  deleteBoard,
+  addTask,
+  editTask,
+  deleteTask,
+} = appDataSlice.actions

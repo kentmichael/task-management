@@ -3,10 +3,23 @@ import { styled } from "@mui/material/styles"
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputLabel-formControl": {
-    fontSize: "14px",
+    fontSize: "12px",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& .MuiOutlinedInput-input": {
+      fontSize: "12px",
+    },
   },
 }))
 
-export default function StyledCustomization({ id, label }) {
-  return <StyledTextField id={id} label={label} variant="outlined" fullWidth />
+export default function StyledCustomization({ label, field, helperText }) {
+  return (
+    <StyledTextField
+      label={label}
+      variant="outlined"
+      fullWidth
+      helperText={helperText}
+      {...field}
+    />
+  )
 }

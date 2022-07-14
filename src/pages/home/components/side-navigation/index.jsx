@@ -14,17 +14,19 @@ import StyledButtonAccount from "./styles/StyledButtonAccount"
 import BoardModal from "@/common/modal/board"
 import useModal from "@/hooks/useModal"
 
-const SideNavigation = ({ sideNav }) => {
+const SideNavigation = ({ sideNav, board }) => {
   const appData = useSelector((state) => state.appData)
   const {
     data: { boards },
   } = appData
   const [openModal, toggleModal] = useModal()
   const { toggleSideNavigation } = sideNav
+  const { selectedBoard, setIdSelectedBoard } = board
 
   return (
     <StyledDrawer sideNav={sideNav}>
       <StyledToolbarHeader sideNav={sideNav} />
+
       <StyledBoxContent>
         <StyledButtonCreateBoard
           toggleModal={toggleModal}
@@ -32,6 +34,7 @@ const SideNavigation = ({ sideNav }) => {
         >
           Create New Board
         </StyledButtonCreateBoard>
+
         <StyledBoxInnerContent>
           <StyledBoxContentHeader>
             All Boards ({boards?.length || 0})
@@ -39,16 +42,31 @@ const SideNavigation = ({ sideNav }) => {
           <StyledListBoards>
             {boards?.length &&
               boards.map((board) => {
-                return <StyledListItem key={board.id} name={board.name} />
+                return (
+                  <StyledListItem
+                    key={board.boardId}
+                    name={board.boardName}
+                    id={board.boardId}
+                    selectedBoard={selectedBoard}
+                    setIdSelectedBoard={setIdSelectedBoard}
+                  />
+                )
               })}
           </StyledListBoards>
         </StyledBoxInnerContent>
+
         <StyledStackSettings>
           <StyledStackSwitchTheme />
           <StyledButtonAccount />
         </StyledStackSettings>
       </StyledBoxContent>
-      <BoardModal open={openModal} toggleModal={toggleModal} type="create" />
+
+      <BoardModal
+        open={openModal}
+        toggleModal={toggleModal}
+        type="create"
+        selectedBoard={null}
+      />
     </StyledDrawer>
   )
 }

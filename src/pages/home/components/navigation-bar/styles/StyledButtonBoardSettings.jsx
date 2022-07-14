@@ -8,10 +8,6 @@ const StyledButtonBoardSettings = styled(IconButton)(({ theme }) => ({}))
 const StyledMoreVertIcon = styled(MoreVertIcon)(({ theme }) => ({
   width: "30px",
   height: "30px",
-  [theme.breakpoints.up("sm")]: {
-    width: "40px",
-    height: "40px",
-  },
 }))
 
 export default function StyledCustomization({ handleClick }) {

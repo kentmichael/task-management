@@ -2,8 +2,8 @@ import Grid from "@mui/material/Grid"
 import { styled } from "@mui/material/styles"
 
 const StyledGridItem = styled(Grid)(({ theme }) => ({
-  width: "100%",
   margin: 0,
+  borderRadius: "5px",
   display: "flex",
   flexDirection: "column",
   flexWrap: "wrap",

@@ -2,11 +2,23 @@ import TextField from "@mui/material/TextField"
 import { styled } from "@mui/material/styles"
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
+  flexGrow: 1,
   "& .MuiInputLabel-formControl": {
-    fontSize: "14px",
+    fontSize: "12px",
+  },
+  "& .MuiFormHelperText-root": {
+    color: "red",
   },
 }))
 
-export default function StyledCustomization({ id, label }) {
-  return <StyledTextField id={id} label={label} variant="standard" fullWidth />
+export default function StyledCustomization({ label, helperText, field }) {
+  return (
+    <StyledTextField
+      label={label}
+      variant="standard"
+      fullWidth
+      helperText={helperText}
+      {...field}
+    />
+  )
 }

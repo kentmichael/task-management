@@ -4,16 +4,29 @@ import { styled } from "@mui/material/styles"
 
 const StyledAutocompleteStatus = styled(Autocomplete)(({ theme }) => ({}))
 
-const options = ["q", "w", "e", "r", "t"]
-
-export default function StyledCustomization() {
+export default function StyledCustomization({
+  options,
+  setFieldValue,
+  setTouched,
+  values,
+  helperText,
+}) {
   return (
     <StyledAutocompleteStatus
+      isOptionEqualToValue={(option, value) => option === value}
+      value={values.status}
+      onChange={(e, newValue) => {
+        setFieldValue("status", newValue)
+      }}
+      onBlur={() => setTouched({ status: true })}
       options={options}
-      id="status"
-      clearOnEscape
       renderInput={(params) => (
-        <TextField {...params} label="Select Status" variant="outlined" />
+        <TextField
+          {...params}
+          label="Select Status"
+          variant="outlined"
+          helperText={helperText}
+        />
       )}
     />
   )

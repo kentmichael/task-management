@@ -11,15 +11,21 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 }))
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
-  "& :selected": {
-    backgroundColor: "red",
-  },
+  borderRadius: "5px",
 }))
 
-export default function StyledCustomization({ name }) {
+export default function StyledCustomization({
+  name,
+  id,
+  selectedBoard,
+  setIdSelectedBoard,
+}) {
   return (
     <ListItem disablePadding>
-      <StyledListItemButton selected={true}>
+      <StyledListItemButton
+        selected={id === selectedBoard}
+        onClick={() => setIdSelectedBoard(id)}
+      >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>

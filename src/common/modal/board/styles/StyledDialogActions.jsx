@@ -8,6 +8,7 @@ const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
   alignItems: "center",
   gap: "10px",
   paddingInline: "20px",
+  paddingTop: 0,
   paddingBottom: "30px",
   "& :not(:first-of-type)": {
     margin: 0,

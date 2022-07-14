@@ -9,9 +9,9 @@ const App = () => {
   return (
     <CssResets>
       <Routes>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="/task-management" element={<Home />} />
-        <Route path="*" element={<NoMatchPage />} />
+        <Route path="/task-management/login" element={<LoginPage />} />
+        <Route path="/task-management/home" element={<Home />} />
+        <Route path="/task-management*" element={<NoMatchPage />} />
       </Routes>
     </CssResets>
   )

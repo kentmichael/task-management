@@ -23,6 +23,23 @@ const StyledPaperTask = styled(Paper)(({ theme }) => ({
   },
 }))
 
-export default function StyledCustomization({ children }) {
-  return <StyledPaperTask>{children}</StyledPaperTask>
+export default function StyledCustomization({
+  toggleModalTask,
+  selectedTaskId,
+  selectedColumnId,
+  columnId,
+  taskId,
+  children,
+}) {
+  return (
+    <StyledPaperTask
+      onClick={() => {
+        toggleModalTask(true)
+        selectedTaskId(taskId)
+        selectedColumnId(columnId)
+      }}
+    >
+      {children}
+    </StyledPaperTask>
+  )
 }

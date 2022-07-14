@@ -16,7 +16,7 @@ export default function StyledCustomization() {
     <StyledButtonAccount
       startIcon={<StyledAvatar />}
       color="primary"
-      variant="contained"
+      variant="filled"
     >
       Account Settings
     </StyledButtonAccount>

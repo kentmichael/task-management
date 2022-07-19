@@ -12,13 +12,18 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }))
 
-export default function StyledCustomization({ label, field, helperText }) {
+export default function StyledCustomization({
+  label,
+  field,
+  touched,
+  helperText,
+}) {
   return (
     <StyledTextField
       label={label}
       variant="outlined"
       fullWidth
-      helperText={helperText}
+      helperText={touched?.taskTitle && helperText}
       {...field}
     />
   )

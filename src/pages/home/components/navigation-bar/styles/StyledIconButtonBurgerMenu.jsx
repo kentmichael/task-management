@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles"
 const StyledIconButtonBurgerMenu = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  color: "#000",
+  color: theme.palette.action.active,
   display: open ? "none" : "block",
 }))
 

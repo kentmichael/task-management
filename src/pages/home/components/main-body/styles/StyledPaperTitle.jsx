@@ -2,7 +2,7 @@ import Typography from "@mui/material/Typography"
 import { styled } from "@mui/material/styles"
 
 const StyledPaperTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "12px",
+  fontSize: "14px",
   fontWeight: 600,
 }))
 

@@ -1,7 +1,8 @@
 import React from "react"
-import StyledBoxMain from "./styles/StyledBoxMain"
 import LoginForm from "./components/form/login-form"
 import RegisterForm from "./components/form/register-form"
+
+import StyledBoxMain from "./styles/StyledBoxMain"
 
 const Main = ({ toggleForm }) => {
   return (

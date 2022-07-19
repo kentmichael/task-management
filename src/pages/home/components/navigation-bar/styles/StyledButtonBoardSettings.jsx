@@ -10,12 +10,17 @@ const StyledMoreVertIcon = styled(MoreVertIcon)(({ theme }) => ({
   height: "30px",
 }))
 
-export default function StyledCustomization({ handleClick }) {
+export default function StyledCustomization({ activeUser, handleClick }) {
   return (
     <Tooltip title="Board Settings">
-      <StyledButtonBoardSettings onClick={handleClick}>
-        <StyledMoreVertIcon />
-      </StyledButtonBoardSettings>
+      <span>
+        <StyledButtonBoardSettings
+          onClick={handleClick}
+          disabled={activeUser?.boards?.length ? false : true}
+        >
+          <StyledMoreVertIcon />
+        </StyledButtonBoardSettings>
+      </span>
     </Tooltip>
   )
 }

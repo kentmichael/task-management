@@ -2,8 +2,9 @@ import React from "react"
 import { Formik, Form, Field, FastField, FieldArray } from "formik"
 import * as Yup from "yup"
 import _ from "lodash"
-import { addBoard, editBoard } from "@/setup/features/app-data/appDataSlice"
-import { useDispatch, useSelector } from "react-redux"
+import { addBoard, editBoard } from "@/setup/features/users/usersSlice"
+import { useDispatch } from "react-redux"
+
 import StyledDialog from "./styles/StyledDialog"
 import StyledDialogTitle from "./styles/StyledDialogTitle"
 import StyledFormControl from "./styles/StyledFormControl"
@@ -26,12 +27,14 @@ const onSubmit = (
   toggleModal,
   dispatch,
   type,
-  selectedBoard
+  selectedBoard,
+  activeUser
 ) => {
   const { resetForm, setSubmitting } = onSubmitProps
 
-  if (type === "edit") dispatch(editBoard({ selectedBoard, values }))
-  else dispatch(addBoard(values))
+  if (type === "edit")
+    dispatch(editBoard({ selectedBoard, values, activeUser }))
+  else dispatch(addBoard({ values, activeUser }))
 
   toggleModal(false)
   setSubmitting(false)
@@ -52,14 +55,12 @@ const validationSchema = Yup.object({
 })
 
 const BoardModal = (props) => {
-  const { open, toggleModal, type, selectedBoard } = props
+  const { open, toggleModal, type, selectedBoard, activeUser } = props
   const dispatch = useDispatch()
-  const appData = useSelector((state) => state.appData)
-  const {
-    data: { boards },
-  } = appData
 
-  const boardData = boards?.find((board) => board.boardId === selectedBoard)
+  const boardData = activeUser?.boards?.find(
+    (board) => board.boardId === selectedBoard
+  )
   const savedData = {
     boardName: boardData?.boardName,
     columns: _.cloneDeep(boardData?.columns),
@@ -84,7 +85,8 @@ const BoardModal = (props) => {
             toggleModal,
             dispatch,
             type,
-            selectedBoard
+            selectedBoard,
+            activeUser
           )
         }}
       >

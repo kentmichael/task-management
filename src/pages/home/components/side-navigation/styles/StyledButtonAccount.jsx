@@ -9,14 +9,19 @@ const StyledButtonAccount = styled(Button)(({ theme }) => ({
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   width: "30px",
   height: "30px",
+  marginRight: "4px",
 }))
 
-export default function StyledCustomization() {
+export default function StyledCustomization({
+  activeUser,
+  toggleModalAccountSettings,
+}) {
   return (
     <StyledButtonAccount
-      startIcon={<StyledAvatar />}
+      startIcon={<StyledAvatar src={activeUser?.avatar} />}
       color="primary"
       variant="filled"
+      onClick={() => toggleModalAccountSettings(true)}
     >
       Account Settings
     </StyledButtonAccount>

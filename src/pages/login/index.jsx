@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { postLoginDetails } from "@/setup/features/login/loginSlice"
-import StyledStackBackground from "./styles/StyledStackBackground"
-import StyledMainContainer from "./styles/StyledMainContainer"
+import React, { useState } from "react"
+import { Navigate } from "react-router-dom"
 import Header from "./components/header"
 import Main from "./components/main"
 import Footer from "./components/footer"
+import StyledStackBackground from "./styles/StyledStackBackground"
+import StyledMainContainer from "./styles/StyledMainContainer"
 
 const LoginPage = () => {
-  const dispatch = useDispatch()
   const [toggleForm, setToggleForm] = useState(false)
-
   const toggleLoginRegisterForm = () => setToggleForm(!toggleForm)
 
-  useEffect(() => {
-    dispatch(
-      postLoginDetails({ email: "eve.holt@reqres.in", password: "anypassword" })
-    )
-  }, [])
+  const session = localStorage.getItem("APP_SESSION")
+  const sessionObject = session ? JSON.parse(session) : null
+
+  if (sessionObject?.token) {
+    return <Navigate to="/task-management/home" />
+  }
 
   return (
     <StyledStackBackground>
-      <StyledMainContainer>
+      <StyledMainContainer toggleForm={toggleForm}>
         <Header />
         <Main toggleForm={toggleForm} />
         <Footer

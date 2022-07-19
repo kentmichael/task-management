@@ -7,7 +7,7 @@ const StyledStackHeader = styled(Stack)(({ theme }) => ({
   paddingBlock: "20px",
   paddingInline: "10px",
   backgroundColor: "#3f51b5",
-  boxShadow: "0px 6px 1px #a5a5a5",
+  boxShadow: "0px 6px 1px #393939",
   [theme.breakpoints.up("md")]: {
     paddingBlock: "30px",
     paddingInline: "10px",

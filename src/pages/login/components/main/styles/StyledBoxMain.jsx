@@ -4,8 +4,8 @@ import { styled } from "@mui/material/styles"
 const StyledBoxMain = styled(Box)(({ theme }) => ({
   borderRadius: "10px",
   padding: "20px",
-  backgroundColor: "#fff",
-  boxShadow: "0px 6px 1px #a5a5a5",
+  backgroundColor: theme.palette.background.default,
+  boxShadow: "0px 6px 1px #393939",
 }))
 
 export default function StyledCustomization({ children }) {

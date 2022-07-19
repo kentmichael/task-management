@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles"
 const StyledListBoards = styled(List)(({ theme }) => ({
   "& .MuiListItem-root": {
     "& .Mui-selected": {
-      backgroundColor: "#e0e0e0",
+      backgroundColor: theme.palette.action.selected,
     },
   },
 }))

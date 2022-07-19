@@ -1,33 +1,27 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
+import useModal from "@/hooks/useModal"
+import TaskModal from "@/common/modal/task"
+
 import StyledStackMain from "./styles/StyledStackMain"
 import StyledGridContainer from "./styles/StyledGridContainer"
 import StyledGridItem from "./styles/StyledGridItem"
 import StyledColumnTitle from "./styles/StyledColumnTitle"
 import StyledPaperTask from "./styles/StyledPaperTask"
 import StyledPaperTitle from "./styles/StyledPaperTitle"
-import useModal from "@/hooks/useModal"
-import TaskModal from "@/common/modal/task"
-import { Stack } from "@mui/material"
+import StyledPaperNotes from "./styles/StyledPaperNotes"
+import StyledStackColumnBackground from "./styles/StyledStackColumnBackground"
 
-const MainBody = ({ openSideNav, selectedBoard }) => {
-  const appData = useSelector((state) => state.appData)
-  const {
-    isLoading,
-    data: { boards },
-    errorMessage,
-  } = appData
+const MainBody = ({ openSideNav, selectedBoard, activeUser }) => {
+  const users = useSelector((state) => state.users)
+  const { isLoading, errorMessage } = users
+
   const [taskId, setTaskId] = useState()
   const [columnId, setcolumnId] = useState()
   const [openModalTask, toggleModalTask] = useModal()
 
-  const selectedTaskId = (id) => {
-    setTaskId(id)
-  }
-
-  const selectedColumnId = (id) => {
-    setcolumnId(id)
-  }
+  const selectedTaskId = (id) => setTaskId(id)
+  const selectedColumnId = (id) => setcolumnId(id)
 
   return (
     <StyledStackMain openSideNav={openSideNav}>
@@ -37,7 +31,7 @@ const MainBody = ({ openSideNav, selectedBoard }) => {
         ) : errorMessage ? (
           <h3>{errorMessage}</h3>
         ) : (
-          boards?.map((board) => {
+          activeUser?.boards?.map((board) => {
             if (board.boardId === selectedBoard) {
               {
                 return board.columns.map((column) => {
@@ -46,33 +40,34 @@ const MainBody = ({ openSideNav, selectedBoard }) => {
                       <StyledColumnTitle>
                         {column.columnName} ({column.tasks.length})
                       </StyledColumnTitle>
-                      <Stack
-                        sx={{
-                          gap: "10px",
-                          borderRadius: "5px",
-                          padding: "10px",
-                          backgroundColor: "#eeeeee",
-                        }}
-                      >
+                      <StyledStackColumnBackground>
                         {column.tasks
                           .map((task) => {
+                            const { taskId, taskTitle, assignedBy, createdBy } =
+                              task
+
                             return (
                               <StyledPaperTask
-                                key={task.taskId}
+                                key={taskId}
                                 toggleModalTask={toggleModalTask}
                                 selectedTaskId={selectedTaskId}
                                 selectedColumnId={selectedColumnId}
                                 columnId={column.columnId}
-                                taskId={task.taskId}
+                                taskId={taskId}
                               >
                                 <StyledPaperTitle>
-                                  {task.taskTitle}
+                                  Title - {taskTitle}
                                 </StyledPaperTitle>
+                                <hr />
+                                <StyledPaperNotes>
+                                  Assigned by: {assignedBy} <br />
+                                  Created by: {createdBy} <br />
+                                </StyledPaperNotes>
                               </StyledPaperTask>
                             )
                           })
                           .reverse()}
-                      </Stack>
+                      </StyledStackColumnBackground>
                     </StyledGridItem>
                   )
                 })
@@ -81,6 +76,7 @@ const MainBody = ({ openSideNav, selectedBoard }) => {
           })
         )}
       </StyledGridContainer>
+
       <TaskModal
         open={openModalTask}
         toggleModalTask={toggleModalTask}
@@ -88,6 +84,7 @@ const MainBody = ({ openSideNav, selectedBoard }) => {
         type="edit"
         taskId={taskId}
         columnId={columnId}
+        activeUser={activeUser}
       />
     </StyledStackMain>
   )

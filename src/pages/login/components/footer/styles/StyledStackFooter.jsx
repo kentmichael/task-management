@@ -6,8 +6,8 @@ const StyledStackFooter = styled(Stack)(({ theme }) => ({
   borderRadius: "10px",
   paddingBlock: "20px",
   paddingInline: "10px",
-  backgroundColor: "#ffffff",
-  boxShadow: "0px 6px 1px #a5a5a5",
+  backgroundColor: theme.palette.background.default,
+  boxShadow: "0px 6px 1px #393939",
   [theme.breakpoints.up("md")]: {
     paddingBlock: "20px",
     paddingInline: "10px",
@@ -19,7 +19,7 @@ const StyledTypographyP = styled(Typography)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   gap: "5px",
-  color: "#000000",
+  color: theme.palette.text.default,
   fontSize: "10px",
   textAlign: "center",
 

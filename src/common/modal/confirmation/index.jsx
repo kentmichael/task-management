@@ -1,12 +1,14 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
+// import { deleteTask } from "@/setup/features/app-data/appDataSlice"
+import { deleteBoard, deleteTask } from "@/setup/features/users/usersSlice"
+
 import StyledDialog from "./styles/StyledDialog"
 import StyledDialogTitle from "./styles/StyledDialogTitle"
 import StyledDialogActions from "./styles/StyledDialogActions"
 import StyledDialogContent from "./styles/StyledDialogActions"
 import StyledButtonDelete from "./styles/StyledButtonDelete"
 import StyledButtonCancel from "./styles/StyledButtonCancel"
-import { deleteBoard, deleteTask } from "@/setup/features/app-data/appDataSlice"
 
 const ConfirmationModal = (props) => {
   const {
@@ -18,21 +20,22 @@ const ConfirmationModal = (props) => {
     handleClose,
     taskId,
     columnId,
+    activeUser,
   } = props
-  const appData = useSelector((state) => state.appData)
-  const {
-    data: { boards },
-  } = appData
   const dispatch = useDispatch()
-  const board = boards?.find((board) => board.id === selectedBoard)
+  const board = activeUser?.boards?.find(
+    (board) => board.boardId === selectedBoard
+  )
+  const columns = board?.columns.find((column) => column.columnId === columnId)
+  const task = columns?.tasks.find((task) => task.taskId === taskId)
 
   const deleteSelectedBoard = () => {
-    dispatch(deleteBoard(selectedBoard))
+    dispatch(deleteBoard({ selectedBoard, activeUser }))
     toggleModalConfirm(false)
   }
 
   const deleteSelectedTask = () => {
-    dispatch(deleteTask({ selectedBoard, columnId, taskId }))
+    dispatch(deleteTask({ selectedBoard, columnId, taskId, activeUser }))
 
     toggleModalConfirm(false)
     handleClose()
@@ -45,10 +48,10 @@ const ConfirmationModal = (props) => {
       <StyledDialogContent>
         {type === "board"
           ? `
-            Are you sure you want to delete the ${board?.name} board? This action will remove all columns and tasks and cannot be
+            Are you sure you want to delete the "${board?.boardName}" board? This action will remove all columns and tasks and cannot be
             reversed.
           `
-          : `Are you sure you want to delete the "name" Task? This action will remove the task and cannot be reversed.`}
+          : `Are you sure you want to delete the "${task?.taskTitle}" task? This action will remove the task and cannot be reversed.`}
       </StyledDialogContent>
       <StyledDialogActions>
         <StyledButtonDelete

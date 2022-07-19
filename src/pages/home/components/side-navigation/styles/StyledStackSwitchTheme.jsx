@@ -15,11 +15,16 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: "12px",
 }))
 
-export default function StyledCustomization() {
+export default function StyledCustomization({ toggleTheme, toggleThemeValue }) {
   return (
     <StyledStackSwitchTheme>
       <StyledTypography>Light</StyledTypography>
-      <Switch checked={false} />
+      <Switch
+        checked={toggleThemeValue}
+        onClick={() => {
+          toggleTheme(!toggleThemeValue)
+        }}
+      />
       <StyledTypography>Dark</StyledTypography>
     </StyledStackSwitchTheme>
   )

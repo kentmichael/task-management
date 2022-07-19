@@ -1,7 +1,9 @@
 import Container from "@mui/material/Container"
 import { styled } from "@mui/material/styles"
 
-const StyledMainContainer = styled(Container)(({ theme }) => ({
+const StyledMainContainer = styled(Container, {
+  shouldForwardProp: (prop) => prop !== "toggleForm",
+})(({ theme, toggleForm }) => ({
   display: "flex",
   flexDirection: "column",
   flexWrap: "wrap",
@@ -13,8 +15,15 @@ const StyledMainContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     maxWidth: "400px",
   },
+  [theme.breakpoints.up("md")]: {
+    maxWidth: toggleForm ? "600px" : "400px",
+  },
 }))
 
-export default function StyledCustomization({ children }) {
-  return <StyledMainContainer>{children}</StyledMainContainer>
+export default function StyledCustomization({ toggleForm, children }) {
+  return (
+    <StyledMainContainer toggleForm={toggleForm}>
+      {children}
+    </StyledMainContainer>
+  )
 }

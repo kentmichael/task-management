@@ -5,7 +5,7 @@ const StyledTypographyBoardTitle = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: 600,
   textTransform: "capitalize",
-  color: "#000",
+  color: theme.palette.text.primary,
   [theme.breakpoints.up("sm")]: {
     fontSize: "20px",
   },

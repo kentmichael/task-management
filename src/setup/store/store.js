@@ -1,20 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit"
-import AppDataReducer from "@/setup/features/app-data/appDataSlice"
 import LoginReducer from "@/setup/features/login/loginSlice"
+import UsersReducer from "@/setup/features/users/usersSlice"
+import RegisterReducer from "@/setup/features/registration/registerSlice"
 
 const store = configureStore({
   reducer: {
-    appData: AppDataReducer,
     login: LoginReducer,
+    users: UsersReducer,
+    register: RegisterReducer,
   },
 })
 
-// Create async request to two api endpoints
-// Use native promise and axios
-
 store.subscribe(() => {
   const APP_STORE = store.getState()
-  console.log("Store:", APP_STORE)
+  localStorage.setItem("APP_STORE", JSON.stringify(APP_STORE))
 })
 
 export default store

@@ -7,7 +7,7 @@ const StyledStackBackground = styled(Stack)(({ theme }) => ({
   height: "100vh",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#d4d4d4",
+  backgroundColor: "#000",
   backgroundImage: `url(${BgMobile})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",

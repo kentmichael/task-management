@@ -5,7 +5,7 @@ const StyledButtonTask = styled(Button)(({ theme }) => ({
   width: "100%",
   margin: 0,
   fontSize: "12px",
-  color: theme.palette.text.primary,
+  color: "#fff",
 }))
 
 export default function StyledCustomization({ onClick, type, disabled }) {

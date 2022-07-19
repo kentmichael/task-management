@@ -1,6 +1,5 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-// import { deleteTask } from "@/setup/features/app-data/appDataSlice"
 import { deleteBoard, deleteTask } from "@/setup/features/users/usersSlice"
 
 import StyledDialog from "./styles/StyledDialog"

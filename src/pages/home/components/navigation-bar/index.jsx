@@ -15,7 +15,8 @@ import StyledMenuBoardSettings from "./styles/StyledMenuBoardSettings"
 
 const NavigationBar = ({ sideNav, selectedBoard, activeUser }) => {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [openModal, toggleModal] = useModal()
+
+  const [openModalBoard, toggleModalBoard] = useModal()
   const [openModalTask, toggleModalTask] = useModal()
   const [openModalConfirm, toggleModalConfirm] = useModal()
 
@@ -49,7 +50,7 @@ const NavigationBar = ({ sideNav, selectedBoard, activeUser }) => {
             <StyledMenuBoardSettings
               anchorEl={anchorEl}
               handleClose={handleClose}
-              toggleModal={toggleModal}
+              toggleModalBoard={toggleModalBoard}
               toggleModalConfirm={toggleModalConfirm}
             />
           </StyledStack>
@@ -65,8 +66,8 @@ const NavigationBar = ({ sideNav, selectedBoard, activeUser }) => {
       />
 
       <BoardModal
-        open={openModal}
-        toggleModal={toggleModal}
+        open={openModalBoard}
+        toggleModalBoard={toggleModalBoard}
         type="edit"
         selectedBoard={selectedBoard}
         activeUser={activeUser}

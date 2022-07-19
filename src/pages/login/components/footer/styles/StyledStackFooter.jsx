@@ -7,7 +7,7 @@ const StyledStackFooter = styled(Stack)(({ theme }) => ({
   paddingBlock: "20px",
   paddingInline: "10px",
   backgroundColor: theme.palette.background.default,
-  boxShadow: "0px 6px 1px #393939",
+  boxShadow: "0px 6px 1px #232323",
   [theme.breakpoints.up("md")]: {
     paddingBlock: "20px",
     paddingInline: "10px",

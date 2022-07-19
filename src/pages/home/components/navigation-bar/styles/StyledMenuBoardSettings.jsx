@@ -14,7 +14,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 export default function StyledCustomization({
   anchorEl,
   handleClose,
-  toggleModal,
+  toggleModalBoard,
   toggleModalConfirm,
 }) {
   const open = Boolean(anchorEl)
@@ -28,7 +28,7 @@ export default function StyledCustomization({
         onClose={handleClose}
         onClick={handleClose}
       >
-        <StyledMenuItem onClick={() => toggleModal(true)}>
+        <StyledMenuItem onClick={() => toggleModalBoard(true)}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>

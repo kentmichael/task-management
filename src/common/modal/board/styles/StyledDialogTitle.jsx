@@ -21,11 +21,11 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
 }))
 
-export default function StyledCustomization({ toggleModal, type }) {
+export default function StyledCustomization({ toggleModalBoard, type }) {
   return (
     <StyledDialogTitle>
       <StyledTypography>{`${type} board`}</StyledTypography>
-      <StyledIconButton onClick={() => toggleModal(false)}>
+      <StyledIconButton onClick={() => toggleModalBoard(false)}>
         <CloseIcon fontSize="small" />
       </StyledIconButton>
     </StyledDialogTitle>

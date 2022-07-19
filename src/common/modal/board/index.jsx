@@ -24,7 +24,7 @@ const defaultValues = {
 const onSubmit = (
   values,
   onSubmitProps,
-  toggleModal,
+  toggleModalBoard,
   dispatch,
   type,
   selectedBoard,
@@ -36,7 +36,7 @@ const onSubmit = (
     dispatch(editBoard({ selectedBoard, values, activeUser }))
   else dispatch(addBoard({ values, activeUser }))
 
-  toggleModal(false)
+  toggleModalBoard(false)
   setSubmitting(false)
   resetForm()
 }
@@ -55,7 +55,7 @@ const validationSchema = Yup.object({
 })
 
 const BoardModal = (props) => {
-  const { open, toggleModal, type, selectedBoard, activeUser } = props
+  const { open, toggleModalBoard, type, selectedBoard, activeUser } = props
   const dispatch = useDispatch()
 
   const boardData = activeUser?.boards?.find(
@@ -71,7 +71,7 @@ const BoardModal = (props) => {
   return (
     <StyledDialog open={open}>
       <StyledDialogTitle
-        toggleModal={toggleModal}
+        toggleModalBoard={toggleModalBoard}
         type={type}
       ></StyledDialogTitle>
 
@@ -82,7 +82,7 @@ const BoardModal = (props) => {
           onSubmit(
             values,
             onSubmitProps,
-            toggleModal,
+            toggleModalBoard,
             dispatch,
             type,
             selectedBoard,

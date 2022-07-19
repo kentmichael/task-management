@@ -65,7 +65,7 @@ const TaskModal = (props) => {
     (board) => board.boardId === selectedBoard
   )
   const columns = board?.columns.map((column) => column.columnName)
-  const options = columns ?? ["No options"]
+  const statusOptions = columns ?? ["No options"]
 
   const users = userList?.map((user) => user.email)
   const assigneeOptions = users ?? ["No options"]
@@ -79,7 +79,7 @@ const TaskModal = (props) => {
 
   const defaultValue = {
     taskTitle: type === "edit" ? selectedTask?.taskTitle : "",
-    status: type === "edit" ? selectedTask?.status : options[0],
+    status: type === "edit" ? selectedTask?.status : statusOptions[0],
     assignee: activeUser?.email,
   }
 
@@ -154,7 +154,7 @@ const TaskModal = (props) => {
                           <StyledAutocompleteStatus
                             name={name}
                             label="Select Status"
-                            options={options}
+                            options={statusOptions}
                             setFieldValue={setFieldValue}
                             setTouched={setTouched}
                             values={values}
@@ -204,6 +204,7 @@ const TaskModal = (props) => {
           }}
         </Formik>
       </StyledDialog>
+
       <StyledMenuTask
         open={openAnchor}
         anchorEl={anchorEl}

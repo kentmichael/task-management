@@ -13,9 +13,7 @@ const LoginPage = () => {
   const session = localStorage.getItem("APP_SESSION")
   const sessionObject = session ? JSON.parse(session) : null
 
-  if (sessionObject?.token) {
-    return <Navigate to="/task-management/home" />
-  }
+  if (sessionObject?.token) return <Navigate to="/task-management/home" />
 
   return (
     <StyledStackBackground>

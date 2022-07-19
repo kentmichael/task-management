@@ -21,7 +21,7 @@ const SideNavigation = ({ sideNav, board, activeUser }) => {
   const [toggleThemeValue, setToggleThemeValue] = useState(
     mode === "dark" ? true : false
   )
-  const [openModal, toggleModal] = useModal()
+  const [openModalBoard, toggleModalBoard] = useModal()
   const [openModalAccountSettings, toggleModalAccountSettings] = useModal()
   const { toggleSideNavigation } = sideNav
   const { selectedBoard, setIdSelectedBoard } = board
@@ -38,7 +38,7 @@ const SideNavigation = ({ sideNav, board, activeUser }) => {
 
         <StyledBoxContent>
           <StyledButtonCreateBoard
-            toggleModal={toggleModal}
+            toggleModalBoard={toggleModalBoard}
             toggleSideNavigation={toggleSideNavigation}
           >
             Create New Board
@@ -79,8 +79,8 @@ const SideNavigation = ({ sideNav, board, activeUser }) => {
       </StyledDrawer>
 
       <BoardModal
-        open={openModal}
-        toggleModal={toggleModal}
+        open={openModalBoard}
+        toggleModalBoard={toggleModalBoard}
         type="create"
         selectedBoard={null}
         activeUser={activeUser}

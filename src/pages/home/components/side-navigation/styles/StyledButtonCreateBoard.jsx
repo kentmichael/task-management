@@ -7,7 +7,7 @@ const StyledButtonCreateBoard = styled(Button)(({ theme }) => ({
 }))
 
 export default function StyledCustomization({
-  toggleModal,
+  toggleModalBoard,
   toggleSideNavigation,
   children,
 }) {
@@ -18,7 +18,7 @@ export default function StyledCustomization({
       color="primary"
       onClick={() => {
         if (window.innerWidth <= 600) toggleSideNavigation()
-        toggleModal(true)
+        toggleModalBoard(true)
       }}
     >
       {children}

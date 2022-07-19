@@ -5,7 +5,7 @@ const StyledBoxMain = styled(Box)(({ theme }) => ({
   borderRadius: "10px",
   padding: "20px",
   backgroundColor: theme.palette.background.default,
-  boxShadow: "0px 6px 1px #393939",
+  boxShadow: "0px 6px 1px #232323",
 }))
 
 export default function StyledCustomization({ children }) {

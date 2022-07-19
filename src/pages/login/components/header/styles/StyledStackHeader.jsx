@@ -7,7 +7,7 @@ const StyledStackHeader = styled(Stack)(({ theme }) => ({
   paddingBlock: "20px",
   paddingInline: "10px",
   backgroundColor: "#3f51b5",
-  boxShadow: "0px 6px 1px #393939",
+  boxShadow: "0px 6px 1px #232323",
   [theme.breakpoints.up("md")]: {
     paddingBlock: "30px",
     paddingInline: "10px",
@@ -27,10 +27,10 @@ const StyledTypographyH1 = styled(Typography)(({ theme }) => ({
   },
 }))
 
-export default function StyledCustomization() {
+export default function StyledCustomization({ children }) {
   return (
     <StyledStackHeader component="header">
-      <StyledTypographyH1 variant="h1">Task Management</StyledTypographyH1>
+      <StyledTypographyH1 variant="h1">{children}</StyledTypographyH1>
     </StyledStackHeader>
   )
 }

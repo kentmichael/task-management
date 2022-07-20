@@ -3,6 +3,8 @@ import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
 import { postRegistration } from "@/setup/features/registration/registerSlice"
+import Spinner from "@/common/spinner"
+import useSpinner from "@/hooks/useSpinner"
 
 import StyledGridContainer from "./styles/StyledGridContainer"
 import StyledGridItem from "./styles/StyledGridItem"
@@ -40,21 +42,28 @@ const validationSchema = Yup.object({
     }),
 })
 
-const onSubmit = (values, onSubmitProps, dispatch) => {
+const onSubmit = (values, onSubmitProps, dispatch, setLoadingSpinner) => {
   const { firstName, lastName, avatarLink, email, password } = values
   const { resetForm, setSubmitting } = onSubmitProps
+  setLoadingSpinner(true)
 
-  dispatch(
-    postRegistration({
-      firstName,
-      lastName,
-      avatarLink,
-      email,
-      password,
+  setTimeout(() => {
+    dispatch(
+      postRegistration({
+        firstName,
+        lastName,
+        avatarLink,
+        email,
+        password,
+      })
+    ).then((response) => {
+      setLoadingSpinner(false)
+      if (response.type === "register/postRegistration/fulfilled") {
+        resetForm()
+      }
     })
-  )
+  }, 500)
 
-  resetForm()
   setSubmitting(false)
 }
 
@@ -62,164 +71,171 @@ const RegisterForm = () => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loadingSpinner, setLoadingSpinner] = useSpinner()
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword)
   const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword)
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={(values, onSubmitProps) =>
-        onSubmit(values, onSubmitProps, dispatch)
-      }
-    >
-      {(formik) => {
-        return (
-          <Form>
-            <StyledGridContainer>
-              <StyledGridItem>
-                <Field name="firstName">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+    <>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values, onSubmitProps) =>
+          onSubmit(values, onSubmitProps, dispatch, setLoadingSpinner)
+        }
+      >
+        {(formik) => {
+          return (
+            <Form>
+              <StyledGridContainer>
+                <StyledGridItem>
+                  <Field name="firstName">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="First name"
-                        variant="outlined"
-                        type="text"
-                      />
-                    )
-                  }}
-                </Field>
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="First name"
+                          variant="outlined"
+                          type="text"
+                        />
+                      )
+                    }}
+                  </Field>
 
-                <Field name="lastName">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+                  <Field name="lastName">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="Last name"
-                        variant="outlined"
-                        type="text"
-                      />
-                    )
-                  }}
-                </Field>
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="Last name"
+                          variant="outlined"
+                          type="text"
+                        />
+                      )
+                    }}
+                  </Field>
 
-                <Field name="avatarLink">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+                  <Field name="avatarLink">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="Link to avatar"
-                        variant="outlined"
-                        type="url"
-                      />
-                    )
-                  }}
-                </Field>
-              </StyledGridItem>
-              <StyledGridItem>
-                <Field name="email">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="Link to avatar"
+                          variant="outlined"
+                          type="url"
+                        />
+                      )
+                    }}
+                  </Field>
+                </StyledGridItem>
+                <StyledGridItem>
+                  <Field name="email">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="Email address"
-                        variant="outlined"
-                        type="email"
-                      />
-                    )
-                  }}
-                </Field>
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="Email address"
+                          variant="outlined"
+                          type="email"
+                        />
+                      )
+                    }}
+                  </Field>
 
-                <Field name="password">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+                  <Field name="password">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="Password"
-                        variant="outlined"
-                        type={showPassword ? "text" : "password"}
-                        showPassword={showPassword}
-                        toggleVisibility={togglePasswordVisibility}
-                      />
-                    )
-                  }}
-                </Field>
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="Password"
+                          variant="outlined"
+                          type={showPassword ? "text" : "password"}
+                          showPassword={showPassword}
+                          toggleVisibility={togglePasswordVisibility}
+                        />
+                      )
+                    }}
+                  </Field>
 
-                <Field name="verifyPassword">
-                  {(props) => {
-                    const {
-                      field,
-                      meta: { error, touched },
-                    } = props
+                  <Field name="verifyPassword">
+                    {(props) => {
+                      const {
+                        field,
+                        meta: { error, touched },
+                      } = props
 
-                    return (
-                      <StyledTextField
-                        field={field}
-                        error={error}
-                        touched={touched}
-                        label="Verify Password"
-                        variant="outlined"
-                        type={showConfirmPassword ? "text" : "password"}
-                        showConfirmPassword={showConfirmPassword}
-                        toggleVisibility={toggleConfirmPasswordVisibility}
-                      />
-                    )
-                  }}
-                </Field>
+                      return (
+                        <StyledTextField
+                          field={field}
+                          error={error}
+                          touched={touched}
+                          label="Verify Password"
+                          variant="outlined"
+                          type={showConfirmPassword ? "text" : "password"}
+                          showConfirmPassword={showConfirmPassword}
+                          toggleVisibility={toggleConfirmPasswordVisibility}
+                        />
+                      )
+                    }}
+                  </Field>
 
-                <Button
-                  sx={{ color: "#fff" }}
-                  color="success"
-                  variant="contained"
-                  disabled={!formik.isValid || formik.isSubmitting}
-                  onClick={formik.submitForm}
-                >
-                  Create Account
-                </Button>
-              </StyledGridItem>
-            </StyledGridContainer>
-          </Form>
-        )
-      }}
-    </Formik>
+                  <Button
+                    sx={{ color: "#fff" }}
+                    color="success"
+                    variant="contained"
+                    disabled={
+                      loadingSpinner || !formik.isValid || formik.isSubmitting
+                    }
+                    onClick={formik.submitForm}
+                  >
+                    Create Account
+                  </Button>
+                </StyledGridItem>
+              </StyledGridContainer>
+            </Form>
+          )
+        }}
+      </Formik>
+
+      <Spinner open={loadingSpinner} />
+    </>
   )
 }
 
